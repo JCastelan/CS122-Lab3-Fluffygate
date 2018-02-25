@@ -10,10 +10,12 @@ import socket
 import sys
 
 HOST='128.114.59.29'
-PORT=56798 #make sure this is the same one used by the NSA requester
+PORT=54545 #make sure this is the same one used by the NSA requester
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
+s.bind((HOST, PORT))
+s.listen(1)
+conn, addr = s.accept()
 
 counter=1000
 phase=0 # 0->waiting for data; 1->haveStartedReceivingData

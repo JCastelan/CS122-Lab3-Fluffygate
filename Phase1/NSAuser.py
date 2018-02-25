@@ -12,7 +12,7 @@ import sys
 TARGET_HOST='128.114.59.42'
 TARGET_PORT=2001
 LOCAL_HOST='128.114.59.29 '
-LOCAL_PORT='56798 ' #make sure this matches the listner
+LOCAL_PORT='54545 ' #make sure this matches the listner
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((TARGET_HOST, TARGET_PORT))

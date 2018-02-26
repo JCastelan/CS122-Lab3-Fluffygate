@@ -10,7 +10,10 @@
 # Make a loop that captures all pcaps separately
 # Filter out pcaps that don't have a payload with at least one byte 
 # Only collect packets around 2AM and 2PM
+	# probably best to start capturing a few minutes before 2
+	# and then keep capturing for half an hour
 # Optimize code
+# run it (probably with NOHUP)
 
 ### How to test ### (last updated 2/25)
 # On one terminal, run python packetCapt.py
@@ -19,7 +22,7 @@
 # The second terminal shows the pcaps that this program is trying to capture
 
 ### Current bugs ### (last updated 2/25)
-# 
+# captures more pcaps than are being sent (maybe they are duplicate pcaps?)
 
 import socket
 import sys

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+###THIS PROGRAM NEEDS FIXING
+###DO NOT USE
+
 #this program tries to implement the following command using python:
 # nc -l 128.114.59.29 55543 >> listenerOutput
 
@@ -8,6 +11,8 @@
 """
 import socket
 import sys
+
+print 'Don\'t use this program. Use NSAlistener.sh instead.'
 
 HOST='localhost'#'128.114.59.29'
 PORT=54545 #make sure this is the same one used by the NSA requester

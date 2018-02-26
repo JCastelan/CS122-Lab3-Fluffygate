@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#this program tries to implement the following command using python:
+#this program implements the following command using python:
 #echo $encrpytedPass 128.114.59.29 $portNum | nc 128.114.59.42 2001
 
 """Sources Used:
@@ -18,9 +18,9 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((TARGET_HOST, TARGET_PORT))
 
 cryptFile = open("passwd.crypt", "r")
-cryptedPass=cryptFile.readline().strip()
+cryptedPass=cryptFile.readline().strip()+' '
 
-message=cryptedPass+' '+LOCAL_HOST+LOCAL_PORT
+message=cryptedPass+LOCAL_HOST+LOCAL_PORT
 #print message
 
 s.sendall(message)

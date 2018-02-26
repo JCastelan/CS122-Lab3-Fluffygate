@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #port# must be >=4000
-startPort=$1
+startPort=54545
 
 #mkfifo testFifo
 
@@ -9,7 +9,7 @@ startPort=$1
 #do
 #may need -k
 echo listening at port $startPort
-nc  -l 128.114.59.29 $startPort >>listenerOutput
+nc  -l 128.114.59.29 $startPort >listenerOutput
 
 #done < passwd.crypt
 

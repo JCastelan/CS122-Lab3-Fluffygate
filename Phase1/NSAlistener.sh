@@ -8,8 +8,7 @@ startPort=54545
 #while read encryptedPass
 #do
 #may need -k
-echo listening at port $startPort
-nc  -l 128.114.59.29 $startPort >listenerOutput
+nc  -l $1 $2 > $3
 
 #done < passwd.crypt
 

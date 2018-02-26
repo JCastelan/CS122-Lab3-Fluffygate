@@ -6,27 +6,57 @@
 	https://docs.python.org/2/library/socket.html
 """
 
+###TODO### (last updated 2/25)
+# Make a loop that captures all pcaps separately
+# Filter out pcaps that don't have a payload with at least one byte 
+# Only collect packets around 2AM and 2PM
+# Optimize code
+
+### How to test ### (last updated 2/25)
+# On one terminal, run python packetCapt.py
+# On a different terminal, run this: 
+#	while true; do nc 128.114.59.42 5001 | tshark -i - 2>/dev/null; done
+# The second terminal shows the pcaps that this program is trying to capture
+
+### Current bugs ### (last updated 2/25)
+# 
+
 import socket
 import sys
 import os
+import time
 
+"""Setting up the socket"""
 HOST='128.114.59.42'
 PORT=5001
-
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 
-if not os.path.exists("captpcap"):
+"""Setting up output files"""
+#https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
+if not os.path.exists("captpcap"): 
 	os.makedirs("captpcap")
 
 fileName="captpcap/pcapData"
-fileNo='0'
 fileEnding=".pcap"
-pcapOut = open( fileName+fileNo+fileEnding, 'w')
+fileNo=0
 
-pcapData=s.recv(2048)
-pcapOut.write(pcapData)
+
+#localtime = time.localtime(time.time())
+#print "Local current time :", localtime
+
+
+
+"""Continuous loop of pcap capturing"""
+for x in xrange(0,9):
+	print x
+	pcapOut = open( fileName+str(fileNo)+fileEnding, 'w')
+	pcapData=s.recv(4096)
+	print pcapData
+	pcapOut.write(pcapData)
+	pcapOut.close()
+	fileNo+= 1
+
+"""Program End"""
 print "done"
-
-
 s.close()

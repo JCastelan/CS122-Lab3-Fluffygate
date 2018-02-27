@@ -6,7 +6,7 @@ and outputs all possible substrings of size KEY_SIZE to a line in the specified 
 
 To call script:
 
-	python <inputFileName> <outputFileName>
+	python  keyParser.py <inputFileName> <outputFileName>
 
 """
 

@@ -10,7 +10,7 @@
 # Make a loop that captures all pcaps separately
 # Filter out pcaps that don't have a payload with at least one byte 
 # Only collect packets around 2AM and 2PM
-	# probably best to start capturing a few minutes before 2
+	# probably best to start capturing a few minutes before 2AM and 2PM
 	# and then keep capturing for half an hour
 # Optimize code
 # run it (probably with NOHUP)

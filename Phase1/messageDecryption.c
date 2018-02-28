@@ -72,13 +72,13 @@ int main(int argc, char const *argv[])
 		printf("Writing to %s\n", fileName);
 		FILE *output = fopen( fileName , "w");
 		char* result=calloc(1, 2048);
-		int bytesWritten = decrypt(eMsg, eMsgLength, keyListLine, IV, result);
-		/*printf("[%s] written in %d bytes\n", result, bytesWritten);*/
+		int bytesWritten = decrypt(eMsg, eMsgLength, keyArray[i], IV, result);
+		printf("Writing %d bytes\n", bytesWritten);*/
 		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^uncomment that line to see the results printed to the screen
 		fwrite( result, 1, bytesWritten, output);
 		//fputs( result, output);
 		free(result);
-		free(output);
+		fclose(output);
 	}
 ///////////////////////////////////////////////////////////////////////////////////
 //	fgets( keyListLine, bufSize, keyListFile);

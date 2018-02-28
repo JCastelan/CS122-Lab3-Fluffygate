@@ -68,7 +68,7 @@ int main(int argc, char const *argv[])
 
 	//trying out each each key 
 	for( int i = 0; i < keyListLength; i++){
-		sprintf( fileName, "decryptedMessage%d.txt",i);
+		sprintf( fileName, "decryptedMessage%d",i);
 		printf("Writing to %s\n", fileName);
 		FILE *output = fopen( fileName , "w");
 		char* result=calloc(1, 2048);

@@ -6,18 +6,18 @@
 	https://docs.python.org/2/library/socket.html
 """
 
-###TODO### (last updated 2/25)
-# Make a loop that captures all pcaps separately
+###TODO### (last updated 2/28)
+# Make a loop that captures all pcaps separately (probably done but I don't know how to check)
 # Filter out pcaps that don't have a payload with at least one byte 
-# Only collect packets around 2AM and 2PM
+# Only collect packets around 2AM and 2PM (DONE)
 	# probably best to start capturing a few minutes before 2AM and 2PM
 	# and then keep capturing for half an hour
 # Optimize code
 # Use multiple threads to guarantee we get every packet
 # run it (probably with NOHUP)
 
-### How to test ### (last updated 2/25)
-# On one terminal, run python packetCapt.py
+### How to test ### (last updated 2/28)
+# On one terminal, run ./backgroundCapture.sh
 # On a different terminal, run this: 
 #	while true; do nc 128.114.59.42 5001 | tshark -i - 2>/dev/null; done
 # The second terminal shows the pcaps that this program is trying to capture

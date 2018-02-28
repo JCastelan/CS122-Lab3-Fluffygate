@@ -13,6 +13,7 @@
 	# probably best to start capturing a few minutes before 2AM and 2PM
 	# and then keep capturing for half an hour
 # Optimize code
+# Use multiple threads to guarantee we get every packet
 # run it (probably with NOHUP)
 
 ### How to test ### (last updated 2/25)
@@ -28,6 +29,7 @@ import socket
 import sys
 import os
 import time
+import pcap
 
 """Setting up the socket"""
 HOST='128.114.59.42'
@@ -44,21 +46,52 @@ fileName="captpcap/pcapData"
 fileEnding=".pcap"
 fileNo=0
 
+#######debug stuff 
+startTime = time.localtime(time.time()) ##for debugging
+print "Local current start time :", startTime
+#print "ClockTime is ", startTime.tm_hour,":",startTime.tm_min
+#stopHour=startTime.tm_hour
+#stopMin=startTime.tm_min+2
+#debugCounter = 50
 
-#localtime = time.localtime(time.time())
-#print "Local current time :", localtime
+
+##variables to control the time period in which we capture packets
+AMstartH=1
+AMstopH=2
+PMstartH=13
+PMstopH=14
+
+startM=57
+stopM=15
 
 
 
+localtime = time.localtime(time.time())
+currHour=localtime.tm_hour
+currMin=localtime.tm_min
+print "This program was started at ",currHour,":",currMin
+
+print"waiting for right time"
+while not((((currHour==AMstartH) or (currHour==PMstartH)) and (currMin > startM)) or (((currHour==AMstopH) or (currHour==PMstopH)) and (currMin < stopM))) : 
+	pass
 """Continuous loop of pcap capturing"""
-for x in xrange(0,9):
-	print x
+print "Entering loop"
+while ((((currHour==AMstartH) or (currHour==PMstartH)) and (currMin > startM)) or (((currHour==AMstopH) or (currHour==PMstopH)) and (currMin < stopM))) : 
+	localtime = time.localtime(time.time())
+	currHour=localtime.tm_hour
+	currMin=localtime.tm_min
+	print "Local current time :", localtime
+	print "currMin ", currMin," must be between ", startM, " and ", stopM, " (on the clock) [currHour=", currHour,"]"
+	#print "ClockTime is ", localtime.tm_hour,":",localtime.tm_min
 	pcapOut = open( fileName+str(fileNo)+fileEnding, 'w')
 	pcapData=s.recv(4096)
-	print pcapData
+	#print pcapData #debug
 	pcapOut.write(pcapData)
 	pcapOut.close()
 	fileNo+= 1
+	"""debugCounter-=1
+	if debugCounter <=0:
+		break"""
 
 """Program End"""
 print "done"

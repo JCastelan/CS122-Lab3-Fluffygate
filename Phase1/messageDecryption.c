@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
 
 
 	//TRYING EVERY SUBSTRING OF OBFUSCATED KEY (PROVIDED BY FILE)
-	char result[2048];
+	char* result=calloc(1,2048);
 	int bytesWritten = decrypt(eMsg, eMsgLength, keyListLine, IV, result);
 	printf("[%s] written in %d bytes\n", result, bytesWritten);
 

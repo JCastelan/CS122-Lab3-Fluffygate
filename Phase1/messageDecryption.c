@@ -69,13 +69,14 @@ int main(int argc, char const *argv[])
 	//trying out each each key 
 	for( int i = 0; i < keyListLength; i++){
 		sprintf( fileName, "decryptedMessage%d.txt",i);
-		printf("%s\n", fileName);
+		printf("Writing to %s\n", fileName);
 		FILE *output = fopen( fileName , "w");
 		char* result=calloc(1, 2048);
 		int bytesWritten = decrypt(eMsg, eMsgLength, keyListLine, IV, result);
-		printf("[%s] written in %d bytes\n", result, bytesWritten);
-		//fwrite( result, 1, bytesWritten, output);
-		fputs( result, output);
+		/*printf("[%s] written in %d bytes\n", result, bytesWritten);*/
+		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^uncomment that line to see the results printed to the screen
+		fwrite( result, 1, bytesWritten, output);
+		//fputs( result, output);
 		free(result);
 		free(output);
 	}

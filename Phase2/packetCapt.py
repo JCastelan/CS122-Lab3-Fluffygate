@@ -73,7 +73,9 @@ print "This program was started at ",currHour,":",currMin
 
 print"waiting for right time"
 while not((((currHour==AMstartH) or (currHour==PMstartH)) and (currMin > startM)) or (((currHour==AMstopH) or (currHour==PMstopH)) and (currMin < stopM))) : 
-	pass
+	localtime = time.localtime(time.time())
+	currHour=localtime.tm_hour
+	currMin=localtime.tm_min
 """Continuous loop of pcap capturing"""
 print "Entering loop"
 while ((((currHour==AMstartH) or (currHour==PMstartH)) and (currMin > startM)) or (((currHour==AMstopH) or (currHour==PMstopH)) and (currMin < stopM))) : 

@@ -38,7 +38,7 @@ s.connect((HOST, PORT))
 
 """Setting up output files"""
 #https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
-packetCaptNumber=0 ##TODO change this so that we could maybe have this set by user input
+packetCaptNumber=1 ##TODO change this so that we could maybe have this set by user input
 if not os.path.exists("captpcap"+str(packetCaptNumber)): 
 	os.makedirs("captpcap"+str(packetCaptNumber))
 
@@ -78,17 +78,21 @@ if not(((currHour==AMstartH) and (currMin > startM)) or ((currHour==AMstopH) and
 	currMin=localtime.tm_min
 	if currMin < startM:
 		sleepTimeM=(57-currMin)*60
-		print "Sleeping for ", sleepTimeM/60, " minutes..."
+		print "Sleeping for ", 57-currMin, " minutes..."
 		time.sleep(sleepTimeM) #sleep until the 57th of the hour
 	if currHour==0:
 		time.sleep(1*60*60) #sleep for one hour
 	elif currHour > AMstartH:
 		sleepTimeH=(25-currHour)*3600 #3600=60*60
-		print "Sleeping for ", sleepTimeM/3600, " hours..."
+		print "Sleeping for ", 25-currHour, " hours..."
 		time.sleep(sleepTimeH)
 """Continuous loop of pcap capturing"""
 print "Entering capture loop"
-while (((currHour==AMstartH) and (currMin > startM)) or ((currHour==AMstopH) and (currMin < stopM))) : 
+localtime = time.localtime(time.time())
+currHour=localtime.tm_hour
+currMin=localtime.tm_min
+print "Stopped waiting at ",currHour,":",currMin
+while ((currMin >= startM) or (currMin < stopM) ):#(((currHour==AMstartH) and (currMin >= startM)) or ((currHour==AMstopH) and (currMin <= stopM))) : 
 	try:
 		localtime = time.localtime(time.time())
 		currHour=localtime.tm_hour
@@ -109,5 +113,9 @@ while (((currHour==AMstartH) and (currMin > startM)) or ((currHour==AMstopH) and
 		s.connect((HOST,PORT))
 
 """Program End"""
+localtime = time.localtime(time.time())
+currHour=localtime.tm_hour
+currMin=localtime.tm_min
+print "Finished capturing at ",currHour,":",currMin
 print "done"
 s.close()

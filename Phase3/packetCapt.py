@@ -6,15 +6,10 @@
 	https://docs.python.org/2/library/socket.html
 """
 
-###TODO### (last updated 2/28)
-# Make a loop that captures all pcaps separately (probably done but I don't know how to check)
+###TODO### (last updated 3/6)
 # Filter out pcaps that don't have a payload with at least one byte 
-# Only collect packets around 2AM and 2PM (DONE)
-	# probably best to start capturing a few minutes before 2AM and 2PM
-	# and then keep capturing for half an hour
 # Optimize code
 # Use multiple threads to guarantee we get every packet
-# run it (probably with NOHUP)
 
 ### How to test ### (last updated 2/28)
 # On one terminal, run ./backgroundCapture.sh
@@ -49,17 +44,11 @@ fileNo=0
 #######debug stuff 
 startTime = time.localtime(time.time()) ##for debugging
 print "Local current start time :", startTime
-#print "ClockTime is ", startTime.tm_hour,":",startTime.tm_min
-#stopHour=startTime.tm_hour
-#stopMin=startTime.tm_min+2
-#debugCounter = 50
 
 
 ##variables to control the time period in which we capture packets
 AMstartH=1
 AMstopH=2
-#PMstartH=13 #we need to remove these
-#PMstopH=14 #We need to remove these
 
 startM=57
 stopM=15
@@ -77,8 +66,8 @@ if not(((currHour==AMstartH) and (currMin > startM)) or ((currHour==AMstopH) and
 	currHour=localtime.tm_hour
 	currMin=localtime.tm_min
 	if currMin < startM:
-		sleepTimeM=(57-currMin)*60
-		print "Sleeping for ", 57-currMin, " minutes..."
+		sleepTimeM=(startM-currMin)*60
+		print "Sleeping for ", startM-currMin, " minutes..."
 		time.sleep(sleepTimeM) #sleep until the 57th of the hour
 	if currHour==0:
 		time.sleep(1*60*60) #sleep for one hour
@@ -92,7 +81,7 @@ localtime = time.localtime(time.time())
 currHour=localtime.tm_hour
 currMin=localtime.tm_min
 print "Stopped waiting at ",currHour,":",currMin
-while ((currMin >= startM) or (currMin < stopM) ):#(((currHour==AMstartH) and (currMin >= startM)) or ((currHour==AMstopH) and (currMin <= stopM))) : 
+while ((currMin >= (startM-1)) or (currMin < stopM) ):#(((currHour==AMstartH) and (currMin >= startM)) or ((currHour==AMstopH) and (currMin <= stopM))) : 
 	try:
 		localtime = time.localtime(time.time())
 		currHour=localtime.tm_hour
@@ -106,12 +95,8 @@ while ((currMin >= startM) or (currMin < stopM) ):#(((currHour==AMstartH) and (c
 		pcapOut.write(pcapData)
 		pcapOut.close()
 		fileNo+= 1
-		"""debugCounter-=1
-		if debugCounter <=0:
-		break"""
 	except:
 		s.connect((HOST,PORT))
-
 """Program End"""
 localtime = time.localtime(time.time())
 currHour=localtime.tm_hour

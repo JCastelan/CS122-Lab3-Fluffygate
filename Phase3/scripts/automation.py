@@ -16,7 +16,7 @@ import NSARequests as nsa
 import multiprocessing as mp
 
 #
-PCAP_DIRECTORY = "../"
+PCAP_DIRECTORY = '../'
 
 #Constant values
 PASWWD_FILE = "passwd"

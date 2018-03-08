@@ -33,7 +33,7 @@ s.connect((HOST, PORT))
 
 """Setting up output files"""
 #https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
-packetCaptNumber=1 ##TODO change this so that we could maybe have this set by user input
+packetCaptNumber=1	 ##TODO change this so that we could maybe have this set by user input
 if not os.path.exists("captpcap"+str(packetCaptNumber)): 
 	os.makedirs("captpcap"+str(packetCaptNumber))
 
@@ -47,13 +47,14 @@ print "Local current start time :", startTime
 
 
 ##variables to control the time period in which we capture packets
-AMstartH=1
-AMstopH=2
+startH=1 #og 1, debug 13
+stopH=2 #og 2, debug 14
 
 startM=57
 stopM=15
 
-
+##caesar cipher
+##rotation cipher
 
 localtime = time.localtime(time.time())
 currHour=localtime.tm_hour
@@ -61,7 +62,7 @@ currMin=localtime.tm_min
 print "This program was started at ",currHour,":",currMin
 
 print"waiting for right time"
-if not(((currHour==AMstartH) and (currMin > startM)) or ((currHour==AMstopH) and (currMin < stopM))) : 
+if not(((currHour==startH) and (currMin > startM)) or ((currHour==stopH) and (currMin < stopM))) : 
 	localtime = time.localtime(time.time())
 	currHour=localtime.tm_hour
 	currMin=localtime.tm_min
@@ -69,19 +70,20 @@ if not(((currHour==AMstartH) and (currMin > startM)) or ((currHour==AMstopH) and
 		sleepTimeM=(startM-currMin)*60
 		print "Sleeping for ", startM-currMin, " minutes..."
 		time.sleep(sleepTimeM) #sleep until the 57th of the hour
-	if currHour==0:
+	if currHour==0: ###if debugging, comment this line and the rest of this if statement
 		time.sleep(1*60*60) #sleep for one hour
-	elif currHour > AMstartH:
+	elif currHour > startH:
 		sleepTimeH=(25-currHour)*3600 #3600=60*60
 		print "Sleeping for ", 25-currHour, " hours..."
 		time.sleep(sleepTimeH)
+		#############
 """Continuous loop of pcap capturing"""
 print "Entering capture loop"
 localtime = time.localtime(time.time())
 currHour=localtime.tm_hour
 currMin=localtime.tm_min
 print "Stopped waiting at ",currHour,":",currMin
-while ((currMin >= (startM-1)) or (currMin < stopM) ):#(((currHour==AMstartH) and (currMin >= startM)) or ((currHour==AMstopH) and (currMin <= stopM))) : 
+while ((currMin >= (startM-1)) or (currMin < stopM) ):
 	try:
 		localtime = time.localtime(time.time())
 		currHour=localtime.tm_hour
@@ -96,7 +98,11 @@ while ((currMin >= (startM-1)) or (currMin < stopM) ):#(((currHour==AMstartH) an
 		pcapOut.close()
 		fileNo+= 1
 	except:
-		s.connect((HOST,PORT))
+		print "An exception occurred. Attempting to reconnect"
+		try:
+			s.connect((HOST,PORT))
+		except:
+			print "not a connection disruption problem..."
 """Program End"""
 localtime = time.localtime(time.time())
 currHour=localtime.tm_hour

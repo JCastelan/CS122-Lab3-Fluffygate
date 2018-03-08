@@ -60,7 +60,7 @@ def NSA_listener(localhost, lport, outfile, numRequests):
     start = time.time()
 
     #Open output file
-    outFile = open(outfile, "w")
+    outFile = open(outfile, "a")
 
     #Socket bind to local port
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

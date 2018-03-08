@@ -5,7 +5,7 @@ Script usage:
 
     python pAutomation.py <username> <passwdPCAPFile> <IVPCAPFile> <keyPCAPFile> <msgPCAPFile>
 """
-
+from __future__ import division
 import os
 import sys
 import pcap
@@ -14,6 +14,8 @@ import decrypt
 import keyParser
 import NSARequests as nsa
 import multiprocessing as mp
+import string 
+
 
 #
 PCAP_DIRECTORY = "../"
@@ -36,6 +38,34 @@ LOCAL_HOST = '128.114.59.29 '
 LOCAL_PORT = 52696 
 
 MAX_USERS = 10
+
+#https://stackoverflow.com/questions/1446549/how-to-identify-binary-and-text-files-using-python
+def istext(filename):
+    s=open(filename).read(2048)
+    text_characters = "".join(map(chr, range(32, 127)) + list("\n\r\t\b"))
+    _null_trans = string.maketrans("", "")
+    if not s:
+        # Empty files are considered text
+        return True
+    if "\0" in s:
+        # Files with null bytes are likely binary
+        return False
+    # Get the non-text characters (maps a character to itself then
+    # use the 'remove' option to get rid of the text characters.)
+    t = s.translate(_null_trans, text_characters)
+    # If more than 30% non-text characters, then
+    # this is considered a binary file
+    if float(len(t))/float(len(s)) > 0.30:
+        return False
+    return True
+
+def deleteBinaryFiles(directory):
+
+
+    for file in os.listdir(directory):
+        if not istext(directory + file):
+            os.remove(directory + file)
+
 
 def createDirectories(username):
 
@@ -199,11 +229,21 @@ def automation(usernames, passwdPCAPFiles, ivPCAPFiles, keyPCAPFiles, msgOnePCAP
         keyParser.keyParsing(key_plains[i], parsed_keys[i])
 
     #--------------------------Decrypt---------------------------
+    
     for i in range(numberOfUsers):
 
         decrypt.callDecryptShell(message_one_files[i], iv_files[i], parsed_keys[i], DMSG_FOLDERS_ONE[i])
         decrypt.callDecryptShell(message_two_files[i], iv_files[i], parsed_keys[i], DMSG_FOLDERS_TWO[i])
         decrypt.callDecryptShell(message_three_files[i], iv_files[i], parsed_keys[i], DMSG_FOLDERS_THREE[i])
+
+    #-----------------------------Delete files--------------
+
+    for i in range(numberOfUsers):
+
+        deleteBinaryFiles(DMSG_FOLDERS_ONE[i])
+        deleteBinaryFiles(DMSG_FOLDERS_TWO[i])
+        deleteBinaryFiles(DMSG_FOLDERS_THREE[i])
+
 
 def main():
 

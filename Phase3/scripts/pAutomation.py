@@ -8,10 +8,12 @@ Script usage:
 from __future__ import division
 import os
 import sys
+import time
 import pcap
 import unzip
 import decrypt
 import keyParser
+import smartCracker as sc
 import NSARequests as nsa
 import multiprocessing as mp
 import string 
@@ -130,6 +132,30 @@ def requests(passwd_files, outputFile):
     #Join child process
     userProcess.join() 
 
+def requestToCracker(passwd_files, outputFile):
+    """Prints all responses to arbitrary outputFile"""
+    cPasswds = []
+
+    #From files, create list of paswords to be cracked
+    for pfile in passwd_files:
+        #Obtain encrypted password
+        cryptFile = open(pfile, "r")
+        cryptedPass=cryptFile.readline().strip()
+
+        cPasswds.append(cryptedPass)
+
+    #Call to crack
+    passwds = sc.crackMultiple(cPasswds)
+
+    with open(outputFile, 'w') as f:
+
+        #Print passwds to arbitrary file
+        for i in range(len(passwds)):
+
+            line = cPasswds[i] + " " + passwds[i] + "\n"
+            f.write(line)
+
+
 def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAPFiles, msgTwoPCAPFiles, msgthreePCAPFiles):
 
     numberOfUsers = len(usernames)
@@ -140,6 +166,7 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
 
     #------------------------CREATE NEW DIRECTORIES FOR ALL USERS------------------------
 
+    print "Creating directories for all users..."
     DATA_FOLDERS, OUT_FOLDERS, DMSG_FOLDERS_ONE, DMSG_FOLDERS_TWO, DMSG_FOLDERS_THREE = forAllCreateDirectories(usernames)
     
     #-------------------------------Generate input pcap file paths-------------------------
@@ -160,6 +187,10 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
 
     #--------------------------Generate output data file, and extract data ----------------------------
 
+    print "Extracting data from PCAP files..."
+
+    start = time.time()
+
     passwd_files, iv_files, key_files, message_one_files, message_two_files, message_three_files = [],[],[],[],[],[]
 
     for i in range(numberOfUsers):
@@ -178,13 +209,30 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
         pcap.getZip( KEY_PCAPS[i], key_files[i])
         pcap.getCipherMessage( MESSAGE_1_PCAPS[i], message_one_files[i]) 
         pcap.getCipherMessage( MESSAGE_2_PCAPS[i], message_two_files[i]) 
-        pcap.getCipherMessage( MESSAGE_3_PCAPS[i], message_three_files[i]) 
+        pcap.getCipherMessage( MESSAGE_3_PCAPS[i], message_three_files[i])
+        
+    #Stop and print timer
+    end = time.time()
+    print "Data extracted after", str(end - start), "seconds." 
 
-    #----------------------------NSA Request--------------------------------
+    #----------------------------NSA/Crack Request--------------------------------
 
-    requests(passwd_files, PASS_OUTPUTFILE)
+    print "Cracking passwords"
+
+    #Start timer
+    start = time.time()
+    #print("Starting timer")
+
+    #requests(passwd_files, PASS_OUTPUTFILE)
+    requestToCracker(passwd_files, PASS_OUTPUTFILE)
+
+    #Stop and print timer
+    end = time.time()
+    print "All", str(numberOfUsers), "passwords cracked after", str(end - start), "seconds."
 
     #----------------------------Write passwords to files--------------------------------
+    
+    print "Writing password to corresponding user files."
     
     passwd_plains = []
     
@@ -211,6 +259,8 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
 
     #--------------------------Unzip Keys----------------------------
 
+    print "Unzipping key files..."
+
     key_plains = []
 
     for i in range(numberOfUsers):
@@ -221,6 +271,8 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
 
     #--------------------------Parse Key----------------------------
 
+    print "Parsing Keys..."
+    
     parsed_keys = []
 
     for i in range(numberOfUsers):
@@ -230,6 +282,8 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
 
     #--------------------------Decrypt (AES-128)---------------------------
     
+    print "First Layer Decryption..."
+
     for i in range(numberOfUsers):
 
         decrypt.callDecryptShell(message_one_files[i], iv_files[i], parsed_keys[i], DMSG_FOLDERS_ONE[i])
@@ -243,6 +297,8 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
         deleteBinaryFiles(DMSG_FOLDERS_ONE[i])
         deleteBinaryFiles(DMSG_FOLDERS_TWO[i])
         deleteBinaryFiles(DMSG_FOLDERS_THREE[i])
+
+    print "DONE"
 
 
 """def main():

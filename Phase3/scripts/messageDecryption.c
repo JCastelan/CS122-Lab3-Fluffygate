@@ -18,7 +18,7 @@ int main(int argc, char const *argv[])
 		exit(1);
 	}
 
-	printf("STARTING PROGRAM\n");
+	//printf("STARTING PROGRAM\n");
 
 	//USING THE ARGS
 	FILE* eMsgFile;
@@ -70,7 +70,7 @@ int main(int argc, char const *argv[])
 	//preparing to write results into files
 	char* fileName=calloc(1,1024);
 
-	printf("ABOUT TO LOOP THROUGH ARRAY OF SIZE %d\n", keyListLength);
+	//printf("ABOUT TO LOOP THROUGH ARRAY OF SIZE %d\n", keyListLength);
 	//trying out each each key 
 	for( int i = 0; i < keyListLength; i++){
 		sprintf( fileName, "%sdecryptedMessage%d", destinationFolder, i);
@@ -79,7 +79,7 @@ int main(int argc, char const *argv[])
 		char* result=calloc(1, 2048);
 		int bytesWritten = decrypt(eMsg, eMsgLength, keyArray[i], IV, result);
 		if (bytesWritten != 0){
-			printf("Writing to %s %d bytes\n", fileName, bytesWritten);
+			//printf("Writing to %s %d bytes\n", fileName, bytesWritten);
 			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^uncomment that line to see the results printed to the screen
 			fwrite( result, 1, bytesWritten, output);
 

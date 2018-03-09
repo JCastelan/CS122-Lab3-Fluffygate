@@ -33,7 +33,7 @@ affineDict={'11':'a', '12':'b', '13':'c', '14':'d', '15':'e',
 for x in range(2,numOfArgs):
 	try:
 		#reading cipher message
-		print "file name is... ", sys.argv[x]
+		#print "file name is... ", sys.argv[x]
 		cipher1FN = sys.argv[x]
 		cipher1 = open( cipher1FN, "r")
 		#opening output file
@@ -50,7 +50,11 @@ for x in range(2,numOfArgs):
 		continue
 	while firstChar: #The actual Affine cipher part
 		charAsInt = ord(firstChar)
-		if (charAsInt >= 48) and (charAsInt<=57): #int range
+		if (firstChar == ' '): #converting double spaces to single
+			secondChar = cipher1.read(1)
+			if (secondChar == ' '):
+				results1.write(firstChar)
+		elif (charAsInt >= 48) and (charAsInt<=57): #int range
 			secondChar = cipher1.read(1)
 			char2AsInt = ord(secondChar)
 			#print firstChar
@@ -77,4 +81,4 @@ for x in range(2,numOfArgs):
 #########################################
 
 
-print "finished deciphering"
+#print "finished deciphering"

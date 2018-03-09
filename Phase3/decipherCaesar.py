@@ -25,10 +25,10 @@ if not os.path.exists(destinationDir):
 #directory.write("Orignal\tOutput")
 counter = sys.argv[1]
 for x in range(2,numOfArgs):
-	print x	
+	#print x	
 	try:
 		#reading cipher message
-		print "file name is... ", sys.argv[x]
+		#print "file name is... ", sys.argv[x]
 		cipher1FN = sys.argv[x]
 		cipher1 = open( cipher1FN, "r")
 		#opening output file
@@ -64,4 +64,4 @@ for x in range(2,numOfArgs):
 #########################################
 
 
-print "finished deciphering"
+#print "finished deciphering"

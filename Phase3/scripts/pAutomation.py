@@ -18,7 +18,7 @@ import string
 
 
 #
-PCAP_DIRECTORY = "../"
+PCAP_DIRECTORY = "../captpcap(2AM)/"
 
 PASS_OUTPUTFILE = "../passOutput"
 
@@ -37,7 +37,7 @@ NSA_PORT = 2001
 LOCAL_HOST = '128.114.59.29 '
 LOCAL_PORT = 52696 
 
-MAX_USERS = 10
+MAX_USERS = 66
 
 #https://stackoverflow.com/questions/1446549/how-to-identify-binary-and-text-files-using-python
 def istext(filename):
@@ -130,7 +130,7 @@ def requests(passwd_files, outputFile):
     #Join child process
     userProcess.join() 
 
-def automation(usernames, passwdPCAPFiles, ivPCAPFiles, keyPCAPFiles, msgOnePCAPFiles, msgTwoPCAPFiles, msgthreePCAPFiles):
+def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAPFiles, msgTwoPCAPFiles, msgthreePCAPFiles):
 
     numberOfUsers = len(usernames)
 
@@ -182,7 +182,7 @@ def automation(usernames, passwdPCAPFiles, ivPCAPFiles, keyPCAPFiles, msgOnePCAP
 
     #----------------------------NSA Request--------------------------------
 
-    #requests(passwd_files, PASS_OUTPUTFILE)
+    requests(passwd_files, PASS_OUTPUTFILE)
 
     #----------------------------Write passwords to files--------------------------------
     
@@ -228,7 +228,7 @@ def automation(usernames, passwdPCAPFiles, ivPCAPFiles, keyPCAPFiles, msgOnePCAP
         parsed_keys.append(OUT_FOLDERS[i] + USERNAMES[i] + KEY_PARSED)
         keyParser.keyParsing(key_plains[i], parsed_keys[i])
 
-    #--------------------------Decrypt---------------------------
+    #--------------------------Decrypt (AES-128)---------------------------
     
     for i in range(numberOfUsers):
 
@@ -245,7 +245,7 @@ def automation(usernames, passwdPCAPFiles, ivPCAPFiles, keyPCAPFiles, msgOnePCAP
         deleteBinaryFiles(DMSG_FOLDERS_THREE[i])
 
 
-def main():
+"""def main():
 
     users = ["sampleUser"]
     passwdPCAPFiles = ["phase3_00003_20180304113348.pcap"] 
@@ -256,7 +256,29 @@ def main():
     msgThreePCAPFiles = ["phase3_00043_20180304113348.pcap"]
 
     automation(users, passwdPCAPFiles, ivPCAPFiles, keyPCAPFiles, msgOnePCAPFiles, msgTwoPCAPFiles, msgThreePCAPFiles)
-    
+"""
+def main():
+
+    fileNaming = "pcapData"
+    fileExt = ".pcap"
+
+    users, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAPFiles, msgTwoPCAPFiles, msgThreePCAPFiles = [],[],[],[],[],[],[]
+
+    userCount = 0
+    for i in range(70, 459, 6):
+        
+
+        users.append( "user" + str(userCount) )
+        passwdPCAPFiles.append( fileNaming + str(i) + fileExt )
+        keyPCAPFiles.append( fileNaming + str(i + 1) + fileExt )
+        ivPCAPFiles.append( fileNaming + str(i + 2)  + fileExt)
+        msgOnePCAPFiles.append( fileNaming + str(i + 3)  + fileExt)
+        msgTwoPCAPFiles.append( fileNaming + str(i + 4)  + fileExt)
+        msgThreePCAPFiles.append( fileNaming + str(i + 5)  + fileExt)
+
+        userCount += 1
+
+    automation(users, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAPFiles, msgTwoPCAPFiles, msgThreePCAPFiles)
 
 if __name__ == '__main__':
     main()

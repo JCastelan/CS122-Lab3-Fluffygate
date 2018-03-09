@@ -21,7 +21,7 @@ numOfArgs = len(sys.argv)
 destinationDir = "cipherResultsChainRot/"
 if not os.path.exists(destinationDir): 
 	os.makedirs(destinationDir)
-rotNums = [ 20, 19, 18 ,17] #opposite of the rotation pattern was [7,8,9,6]
+rotNums = [ 20, 19, 18 ,17] #opposite of the rotation pattern that was [7,8,9,6]
 counter = sys.argv[1]
 for x in range(2,numOfArgs):
 	index=0

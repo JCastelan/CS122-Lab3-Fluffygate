@@ -11,4 +11,4 @@ gcc -o messageDecryption crypto.o messageDecryption.o -L /usr/local/ssl/lib -lcr
 #removing junk
 rm *.o
 
-echo TESTING DONE
+#echo TESTING DONE

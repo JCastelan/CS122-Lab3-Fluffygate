@@ -20,7 +20,7 @@ import string
 
 
 #
-PCAP_DIRECTORY = "../captpcap(2AM)/"
+PCAP_DIRECTORY = "../captpcap2/"
 
 PASS_OUTPUTFILE = "../passOutput"
 
@@ -321,7 +321,7 @@ def main():
     users, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAPFiles, msgTwoPCAPFiles, msgThreePCAPFiles = [],[],[],[],[],[],[]
 
     userCount = 0
-    for i in range(70, 459, 6):
+    for i in range(0, 396, 6):
         
 
         users.append( "user" + str(userCount) )

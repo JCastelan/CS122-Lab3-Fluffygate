@@ -47,8 +47,8 @@ print "Local current start time :", startTime
 
 
 ##variables to control the time period in which we capture packets
-startH=1
-stopH=2
+startH=9
+stopH=10
 
 startM=57
 stopM=15

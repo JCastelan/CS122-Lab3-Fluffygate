@@ -14,21 +14,13 @@ def unzipFile(zipFilename, outputFileName, password):
 
     with zipfile.ZipFile(zipFilename) as myzip:
         myzip.setpassword(PWD)
-        
-        try:
+        with myzip.open(KEY_FILE, 'r') as myfile:
+            reading = myfile.read()
 
-                with myzip.open(KEY_FILE, 'r') as myfile:
-                    reading = myfile.read()
-
-                    #Open output files
-                    file = open(outputFileName, "wb")
-                    file.write(reading)
-                    file.close()
-
-        except:
-
-                print "Couldn't open zip:", zipFilename
-                print "Password:", PWD
+            #Open output files
+            file = open(outputFileName, "wb")
+            file.write(reading)
+            file.close()
 
 
 

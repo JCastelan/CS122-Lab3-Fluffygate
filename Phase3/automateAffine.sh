@@ -1,8 +1,9 @@
 #!/bin/bash
+#S1 should be the name of the folder 
 
 echo working...
 counter=0
-for filename in processedDataPackets/user*Output/decriptedMessageThree/*; do
+for filename in finalProcessedDataPackets/user*Output/decriptedMessageThree/*; do
 	python decipherAffine.py $counter $filename
 	counter=$((counter+1)) 
 done

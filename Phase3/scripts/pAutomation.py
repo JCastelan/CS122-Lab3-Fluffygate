@@ -155,6 +155,24 @@ def requestToCracker(passwd_files, outputFile):
             line = cPasswds[i] + " " + passwds[i] + "\n"
             f.write(line)
 
+def callToCaesarCrack():
+
+    shProcess = Popen( ["sh", "../automateCaesar.sh"] )
+    # Wait for process to complete.
+    shProcess.wait()
+
+def callToAffineCrack():
+
+    shProcess = Popen( ["sh", "../automateAffine.sh"] )
+    # Wait for process to complete.
+    shProcess.wait()
+
+def callToChainRotCrack():
+
+    shProcess = Popen( ["sh", "../automateChainRot.sh"] )
+    # Wait for process to complete.
+    shProcess.wait()
+    
 
 def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAPFiles, msgTwoPCAPFiles, msgthreePCAPFiles):
 
@@ -297,6 +315,13 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
         deleteBinaryFiles(DMSG_FOLDERS_ONE[i])
         deleteBinaryFiles(DMSG_FOLDERS_TWO[i])
         deleteBinaryFiles(DMSG_FOLDERS_THREE[i])
+
+
+    #--------------------------Decrypt all three messages---------------------------
+
+    callToCaesarCrack()
+    callToAffineCrack()
+    callToChainRotCrack()
 
     print "DONE"
 

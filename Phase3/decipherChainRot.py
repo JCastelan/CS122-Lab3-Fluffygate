@@ -22,15 +22,16 @@ destinationDir = "cipherResultsChainRot/"
 if not os.path.exists(destinationDir): 
 	os.makedirs(destinationDir)
 rotNums = [ 20, 19, 18 ,17] #opposite of the rotation pattern was [7,8,9,6]
-for x in range(1,numOfArgs):
+counter = sys.argv[1]
+for x in range(2,numOfArgs):
 	index=0
 	try:
 		#reading cipher message
-		print "file name is... ", sys.argv[x]
+		#print "file name is... ", sys.argv[x]
 		cipher1FN = sys.argv[x]
 		cipher1 = open( cipher1FN, "r")
 		#opening output file
-		results1 = open( destinationDir+cipher1FN+"ChainRot"+str(x), "w")#including x in name is for debug purposes
+		results1 = open( destinationDir+"ChainRot"+counter+"_"+str(x), "w")#including x in name is for debug purposes
 	except:
 		print "[Could not open file or file does not exist]"
 		continue
@@ -64,4 +65,4 @@ for x in range(1,numOfArgs):
 #########################################
 
 
-print "finished deciphering"
+#print "finished deciphering"

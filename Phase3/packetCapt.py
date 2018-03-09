@@ -50,7 +50,7 @@ print "Local current start time :", startTime
 startH=1
 stopH=2
 
-startM=58
+startM=57
 stopM=15
 
 
@@ -103,7 +103,10 @@ while ((currMin >= (startM-1)) or (currMin < stopM) ):#(((currHour==AMstartH) an
         template = "An exception of type {0} occurred. Arguments:\n{1!r}"
         message = template.format(type(ex).__name__, ex.args)
         print message
-        s.connect((HOST,PORT))
+        try:
+        	s.connect((HOST,PORT))
+    	except:
+    		print "It wasn't a connection error"
 """Program End"""
 localtime = time.localtime(time.time())
 currHour=localtime.tm_hour

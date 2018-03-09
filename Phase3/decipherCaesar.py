@@ -21,15 +21,19 @@ numOfArgs = len(sys.argv)
 destinationDir = "cipherResultsCaesar/"
 if not os.path.exists(destinationDir): 
 	os.makedirs(destinationDir)
-
-for x in range(1,numOfArgs):
+##directory = open( destinationDir+"directory", "w")
+#directory.write("Orignal\tOutput")
+counter = sys.argv[1]
+for x in range(2,numOfArgs):
+	#print x	
 	try:
 		#reading cipher message
-		print "file name is... ", sys.argv[x]
+		#print "file name is... ", sys.argv[x]
 		cipher1FN = sys.argv[x]
 		cipher1 = open( cipher1FN, "r")
 		#opening output file
-		results1 = open( destinationDir+cipher1FN+"Caesar"+str(x), "w")#including x in name is for debug purposes
+		results1 = open( destinationDir+"CaesarResults"+counter+"_"+str(x), "w")#including x in name is for debug purposes
+		##directory.write(cipher1FN +"\t"+ destinationDir+"CaesarResults"+str(x)+"\n")
 	except:
 		print "[Could not open file or file does not exist]"
 		continue
@@ -60,4 +64,4 @@ for x in range(1,numOfArgs):
 #########################################
 
 
-print "finished deciphering"
+#print "finished deciphering"

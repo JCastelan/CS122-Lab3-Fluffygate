@@ -33,7 +33,7 @@ s.connect((HOST, PORT))
 
 """Setting up output files"""
 #https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
-packetCaptNumber=1 ##TODO change this so that we could maybe have this set by user input
+packetCaptNumber=2	 ##TODO change this so that we could maybe have this set by user input
 if not os.path.exists("captpcap"+str(packetCaptNumber)): 
     os.makedirs("captpcap"+str(packetCaptNumber))
 
@@ -47,11 +47,11 @@ print "Local current start time :", startTime
 
 
 ##variables to control the time period in which we capture packets
-AMstartH=7
-AMstopH=7
+startH=1
+stopH=2
 
-startM=24
-stopM=35
+startM=58
+stopM=15
 
 
 
@@ -61,23 +61,24 @@ currMin=localtime.tm_min
 print "This program was started at ",currHour,":",currMin
 
 
-"""print"waiting for right time"
-if not(((currHour==AMstartH) and (currMin > startM)) or ((currHour==AMstopH) and (currMin < stopM))) : 
-    localtime = time.localtime(time.time())
-    currHour=localtime.tm_hour
-    currMin=localtime.tm_min
-    if currMin < startM:
-        sleepTimeM=(startM-currMin)*60
-        print "Sleeping for ", startM-currMin, " minutes..."
-        time.sleep(sleepTimeM) #sleep until the 57th of the hour
-    if currHour==0:
-        time.sleep(1*60*60) #sleep for one hour
-    elif currHour > AMstartH:
-        sleepTimeH=(25-currHour)*3600 #3600=60*60
-        print "Sleeping for ", 25-currHour, " hours..."
-        time.sleep(sleepTimeH)
+print"waiting for right time"
+if not(((currHour==startH) and (currMin >= startM)) or ((currHour==stopH) and (currMin < stopM))) : 
+	localtime = time.localtime(time.time())
+	currHour=localtime.tm_hour
+	currMin=localtime.tm_min
+	if currMin < startM:
+		sleepTimeM=(startM-currMin)*60
+		print "Sleeping for ", startM-currMin, " minutes..." 
+		time.sleep(sleepTimeM) #sleep until the 57th of the hour
+	if currHour==0: ###if debugging, comment this line and the rest of this if statement
+		time.sleep(1*60*60) #sleep for one hour
+		print "Sleeping for one hour..."
+	elif currHour > startH:
+		sleepTimeH=(25-currHour)*3600 #3600=60*60
+		print "Sleeping for ", 25-currHour, " hours..."
+		time.sleep(sleepTimeH)
+		#############
 
-"""
 """Continuous loop of pcap capturing"""
 print "Entering capture loop"
 localtime = time.localtime(time.time())

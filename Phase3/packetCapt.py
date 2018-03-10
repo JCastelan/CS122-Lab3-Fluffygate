@@ -72,7 +72,7 @@ if currHour < startH: #sleep until the right hour
 	timespan = startH-currHour
 	sleepTimeH=(timespan)*3600
 	print "\tSleeping for ", startH-currHour, " hours... (until hour ", currHour+timespan, ")"
-	time.sleepTimeH 
+	time.sleep(sleepTimeH)
 
 
 localtime = time.localtime(time.time())

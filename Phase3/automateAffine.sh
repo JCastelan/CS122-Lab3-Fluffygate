@@ -3,7 +3,7 @@
 
 echo working...
 counter=0
-for filename in finalProcessedDataPackets/user*Output/decriptedMessageThree/*; do
+for filename in dataProcessedPhase4/user*Output/decriptedMessageThree/*; do
 	python decipherAffine.py $counter $filename
 	counter=$((counter+1)) 
 done

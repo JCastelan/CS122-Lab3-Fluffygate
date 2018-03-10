@@ -222,12 +222,12 @@ def automation(usernames, passwdPCAPFiles, keyPCAPFiles, ivPCAPFiles, msgOnePCAP
         message_three_files.append(DATA_FOLDERS[i] + USERNAMES[i] + MESSAGE_FILE + '3')
 
         #Generate data files from PCAP files
-        pcap.getPasswd( PASWWD_PCAPS[i], passwd_files[i])
+        """pcap.getPasswd( PASWWD_PCAPS[i], passwd_files[i])
         pcap.getIV( IV_PCAPS[i], iv_files[i])
         pcap.getZip( KEY_PCAPS[i], key_files[i])
         pcap.getCipherMessage( MESSAGE_1_PCAPS[i], message_one_files[i]) 
         pcap.getCipherMessage( MESSAGE_2_PCAPS[i], message_two_files[i]) 
-        pcap.getCipherMessage( MESSAGE_3_PCAPS[i], message_three_files[i])
+        pcap.getCipherMessage( MESSAGE_3_PCAPS[i], message_three_files[i])"""
         
     #Stop and print timer
     end = time.time()

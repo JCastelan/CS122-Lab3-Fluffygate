@@ -33,11 +33,11 @@ s.connect((HOST, PORT))
 
 """Setting up output files"""
 #https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
-packetCaptNumber=2	 ##TODO change this so that we could maybe have this set by user input
-if not os.path.exists("captpcap"+str(packetCaptNumber)): 
-    os.makedirs("captpcap"+str(packetCaptNumber))
+packetCaptNumber="Phase4"	 ##TODO change this so that we could maybe have this set by user input
+if not os.path.exists("captpcap"+packetCaptNumber): 
+    os.makedirs("captpcap"+packetCaptNumber)
 
-fileName="captpcap"+str(packetCaptNumber)+"/pcapData"
+fileName="captpcap"+packetCaptNumber+"/pcapData"
 fileEnding=".pcap"
 fileNo=0
 
@@ -47,12 +47,11 @@ print "Local current start time :", startTime
 
 
 ##variables to control the time period in which we capture packets
-startH=9
-stopH=10
+startH=22
+startM=58
 
-startM=57
-stopM=15
-
+stopH=23
+stopM=59
 
 
 localtime = time.localtime(time.time())
@@ -60,38 +59,36 @@ currHour=localtime.tm_hour
 currMin=localtime.tm_min
 print "This program was started at ",currHour,":",currMin
 
-
 print"waiting for right time"
-if not(((currHour==startH) and (currMin >= startM)) or ((currHour==stopH) and (currMin < stopM))) : 
-	localtime = time.localtime(time.time())
-	currHour=localtime.tm_hour
-	currMin=localtime.tm_min
-	if currMin < startM:
-		sleepTimeM=(startM-currMin)*60
-		print "Sleeping for ", startM-currMin, " minutes..." 
-		time.sleep(sleepTimeM) #sleep until the 57th of the hour
-	if currHour==0: ###if debugging, comment this line and the rest of this if statement
-		time.sleep(1*60*60) #sleep for one hour
-		print "Sleeping for one hour..."
-	elif currHour > startH:
-		sleepTimeH=(25-currHour)*3600 #3600=60*60
-		print "Sleeping for ", 25-currHour, " hours..."
-		time.sleep(sleepTimeH)
-		#############
+if currMin < startM: #sleep until the right minute
+	timespan = startM-currMin
+	sleepTimeM=(timespan)*60
+	print "\tSleeping for ", startM-currMin, " minutes... (until minute ", currMin+timespan,")" 
+	time.sleep(sleepTimeM) 
 
-"""Continuous loop of pcap capturing"""
-print "Entering capture loop"
+localtime = time.localtime(time.time())
+currHour=localtime.tm_hour
+if currHour < startH: #sleep until the right hour
+	timespan = startH-currHour
+	sleepTimeH=(timespan)*3600
+	print "\tSleeping for ", startH-currHour, " hours... (until hour ", currHour+timespan, ")"
+	time.sleepTimeH 
+
+
 localtime = time.localtime(time.time())
 currHour=localtime.tm_hour
 currMin=localtime.tm_min
 print "Stopped waiting at ",currHour,":",currMin
-while ((currMin >= (startM-1)) or (currMin < stopM) ):#(((currHour==AMstartH) and (currMin >= startM)) or ((currHour==AMstopH) and (currMin <= stopM))) : 
+
+print "Entering capture loop"
+"""Continuous loop of pcap capturing"""
+while (((currHour==startH) and (currMin >= startM)) or ((currHour==stopH) and (currMin <= stopM))) : 
     try:
         localtime = time.localtime(time.time())
         currHour=localtime.tm_hour
         currMin=localtime.tm_min
-        print "Local current time :", localtime
-        print "[fileNo=", fileNo, "] [currMin=", currMin,"] [currHour=", currHour,"]"
+        #print "Local current time :", localtime
+        print "[fileNo=", fileNo, "] [localtime=", localtime,"]"
         #print "ClockTime is ", localtime.tm_hour,":",localtime.tm_min
         pcapOut = open( fileName+str(fileNo)+fileEnding, 'w')
         pcapData=s.recv(4096)
